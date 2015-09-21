@@ -1,13 +1,14 @@
 from flask import render_template, request
-from a_Model import ModelIt
+from cluster import get_selected
 from app import app
 import pymysql as mdb
+import datetime
 
 f=open('/Users/abramvandergeest/mysql_insightwiki_auth.txt')
 a=f.readline().rstrip()
 f.close()
 
-db = mdb.connect(user="abram.ghost", host="localhost", passwd=a,db="world", charset='utf8')
+db = mdb.connect(user="abram.ghost", host="localhost", passwd=a,db="wikidata", charset='utf8',port=3307)
 
 @app.route('/')
 @app.route('/index')
@@ -16,54 +17,49 @@ def index():
         title = 'Home',
         user = { 'nickname': 'Miguel' })
 
-@app.route('/db')
-def cities_page():
-    with db:
-        cur=db.cursor()
-        cur.execute("SELECT Name FROM City LIMIT 15;")
-        query_results = cur.fetchall()
-    cities=""
-    for result in query_results:
-        cities += result[0]
-        cities += "<br>"
-    return cities
-
-@app.route("/db_fancy")
-def cities_page_fancy():
-    with db:
-        cur = db.cursor()
-        cur.execute("SELECT Name, CountryCode, Population FROM City ORDER BY Population LIMIT 15;")
-
-        query_results = cur.fetchall()
-    cities = []
-    for result in query_results:
-        cities.append(dict(name=result[0], country=result[1], population=result[2]))
-    return render_template('cities.html', cities=cities)
-
-
 @app.route('/input')
-def cities_input():
+def topics_input():
    return render_template("input.html")
 
 @app.route('/output')
-def cities_output():
+def topics_output():
  #pull 'ID' from input field and store it
-  city = request.args.get('ID')
+  topic = request.args.get('ID')
+  date = request.args.get('DATE')
+  print topic, date
+  if date=="": 
+      date=datetime.datetime(2015,8,15,16)
+  else:
+      date=datetime.datetime(int(date[:4]),int(date[4:6]),int(date[6:8]))
 
   with db:
     cur = db.cursor()
-    #just select the city from the world_innodb that the user inputs
-    cur.execute("SELECT Name, CountryCode,  Population FROM City WHERE Name='%s';" % city)
+    cur.execute("SELECT `Id`,`topic_label`,`topic_string` FROM `topics` WHERE `topic_string` LIKE %s;" , ("%%%s%%" % topic,) )
     query_results = cur.fetchall()
 
-  cities = []
-  for result in query_results:
-    cities.append(dict(name=result[0], country=result[1], population=result[2]))
+  pageviews=-1  
+  if len(query_results)>0:
+      print query_results[0]
+      out=get_selected(query_results[0][0],date,6,True)
+      pageviews=out[1]
+      print out[0]
+      print out[1],"!!!!!!!!"
+
+  thresh=800. #Ultimately I can make an adaptive threshold
+  if pageviews==-1:
+    print "no results"
+    pvstr="The topic %s is not considered in this study."%(topic)
+  elif pageviews>=thresh:
+     pvstr="%s is relavent for %s with popularity of %f"%(query_results[0][2].title(),date,pageviews/thresh )   
+  elif pageviews>=0 and pageviews<thresh:
+     pvstr="%s is NOT relavent for %s with popularity of %f"%(query_results[0][2].title(),date,pageviews/thresh )   
+
+  topics=[[1,2,3,4,5]]
+  if pageviews >0:
+    print out[0][0]
+    topics = []
+    for result in out[0]:
+      topics.append(dict(Id=result[0], toplab=result[1], topstr=result[2]))
   
-  #call a function from a_Model package. note we are only pulling one result in the query
-  if len(cities)>=1:
-    pop_input = cities[0]['population']
-  else:
-    pop_input=0;
-  the_result = ModelIt(city, pop_input)
-  return render_template("output.html", cities = cities, the_result = the_result)
+  the_result = 5 #pop_input #ModelIt(city, pop_input)
+  return render_template("output.html", cities = topics, the_result = the_result, date=date,pvstr=pvstr)

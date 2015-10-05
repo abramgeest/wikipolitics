@@ -1,3 +1,11 @@
+.input-group-addon{
+width:25px;
+}
+
+.date-picker{
+width:100px;
+}
+
 body {
   padding-top: 50px;
 }

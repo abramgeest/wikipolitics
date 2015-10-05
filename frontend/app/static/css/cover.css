@@ -9,6 +9,19 @@ a:hover {
   color: #fff;
 }
 
+.input-group-addon{
+width:25px;
+}
+
+.date-picker{
+width:100px;
+}
+
+.toalign tr td 
+{
+  text-align: center;
+}
+
 #hello {font-size 125px}
 
 /* Custom default button */

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Cover Template for Bootstrap</title>
+    <title>Wiki-tics</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="/static/js/ie-emulation-modes-warning.js"></script>
+    <!--<script src="/static/js/ie-emulation-modes-warning.js"></script> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -29,7 +29,6 @@
   </head>
 
   <body>
-
     <div class="site-wrapper">
 
       <div class="site-wrapper-inner">
@@ -41,9 +40,11 @@
               <h3 class="masthead-brand">Wiki-tics</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li class="active"><a href="#">Home</a></li>
-                  <li><a href="#">Features</a></li>
-                  <li><a href="#">Contact</a></li>
+                <!--  <li class="active"><a href="#">Home</a></li> -->
+                  <li><a href="/slides">Slides</a></li>
+                  <!--<li><a href="https://www.slideshare.net/secret/zoZJxxDeYSePYQ">Slides</a></li>-->
+                <!--  <li><a href="https://speakerdeck.com/abramghost/insight-demo-slides">Slides</a></li>-->
+             <!--     <li><a href="#">Contact</a></li>   -->
                 </ul>
               </nav>
             </div>
@@ -51,33 +52,71 @@
 
           <div class="inner cover">
             <h1 class="cover-heading" id='hello'>Wiki-tics</h1>
-            <h2 class="cover-heading" id='hello'>Political Topics from Wikipedia.</h1>
-            <p class="lead"> Wiki-tics provides popularity data on political candidates and topics. 
-                   Using the Wikipedia pageviews an input topic or candidate is classified with other 
-                   topics with similar populatirty trends.  This topic is also given a popularity index.</p>
-            <p class="lead">
-              <a href="/input" class="btn btn-lg btn-default">Learn more</a>
-            </p>
+            <h2 class="cover-heading" id='hello'>Political Topics from Wikipedia Page Views.</h1>
+          <!--  <p class="lead"> Wiki-tics provides popularity data on political candidates and topics. 
+                   For a given time frame see what issues and candidates are popular and which are changing.</p>  
+          -->
+           <!-- <p class="lead">
+              <a href="/home" class="btn btn-lg btn-default">Learn more</a>
+            </p>  -->
+
           </div>
 
+
+        <h2>What have I missed?</h2>
+        <p> Enter a date range (constrained to be between 01/2015 to present) to find out!</p>
+            <!--<div class = "container"> -->
+               <form  action="/home" method="GET">
+                <div class ="form-group">
+                <div>
+                 <label for="SDATE">Start date:</label>
+                 <input type="text" id="SDATE" name='SDATE' value="{{WEEK}}" class="date-picker" style="color: #000000;">
+                 <!--<label for="SDATE" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span> </label>-->
+                 <label for="EDATE">End Date:</label>
+                 <input type="text" id="EDATE" name='EDATE' value="{{TODAY}}" class="date-picker" style="color: #000000;">
+                 <!--<label for="EDATE" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span> </label> -->
+                </div>
+                </div>
+
+                <div>
+                 <button type="submit" class="btn btn-default btn-lg">Search Dates</button>
+               </div>
+
+              </form>
+           <!-- </div> -->
+           <!-- 
+        <div class="form-group" width=20%>
+          <div class="input-group">
+            <input id="date-picker-2" name='date-picker-2' type="text" class="date-picker form-control" placeholder="MM/DD/YYYY">
+            <label for="date-picker-2" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
+            </label>
+          </div>
+        </div>
+-->
           <div class="mastfoot">
             <div class="inner">
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+              <p>Abram Van Der Geest</p>
+              <!--<p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>-->
             </div>
           </div>
-
         </div>
 
       </div>
 
     </div>
 
+
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/js/jquery-ui.min.css">
+    <script src="/static/js/external/jquery/jquery.js"></script>
+    <script src="/static/js/jquery-ui.min.js"></script>
+    <script src="/static/js/cover.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+    <!-- <script src="/static/js/ie10-viewport-bug-workaround.js"></script>  -->
   </body>
 </html>
